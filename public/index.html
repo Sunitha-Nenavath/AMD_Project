@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Smart Food Health Assistant</title>
-    <!-- Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Dynamic Glowing Background -->
     <div class="background-elements">
         <div class="blob shape1"></div>
         <div class="blob shape2"></div>
@@ -19,14 +16,32 @@
     </div>
 
     <main class="container">
-        <!-- Header Section -->
         <header>
             <h1><i class="fa-solid fa-leaf text-gradient"></i> AI Smart Food Health Assistant</h1>
-            <p>Empower your diet with intelligent nutritional analysis and tailored insights.</p>
+            <p>Empower your diet with intelligent nutritional analysis via Google Gemini API.</p>
         </header>
 
+        <!-- BMI Calculator Section -->
+        <section class="bmi-section glass-panel">
+            <h2><i class="fa-solid fa-weight-scale"></i> Quick BMI Calculator</h2>
+            <div class="input-group-row">
+                <div class="input-group half-width">
+                    <label for="bmiHeight">Height (cm)</label>
+                    <input type="number" id="bmiHeight" placeholder="e.g., 175">
+                </div>
+                <div class="input-group half-width">
+                    <label for="bmiWeight">Weight (kg)</label>
+                    <input type="number" id="bmiWeight" placeholder="e.g., 70">
+                </div>
+            </div>
+            <button id="calcBmiBtn" class="primary-btn bmi-btn secondary">Calculate BMI</button>
+            <div id="bmiResult" class="hidden mt-small result-message">
+                <p>Your BMI is <span id="bmiValue" class="metric-value small-metric">--</span> (<span id="bmiCategory" class="highlight-text">--</span>)</p>
+            </div>
+        </section>
+
         <!-- Input Section -->
-        <section class="input-section glass-panel">
+        <section class="input-section glass-panel mt">
             <div class="input-group">
                 <label for="foodInput">What did you eat (or plan to eat)?</label>
                 <div class="input-wrapper">
@@ -40,9 +55,9 @@
                 <div class="input-wrapper">
                     <i class="fa-solid fa-bullseye"></i>
                     <select id="goalInput">
-                        <option value="General Health">General Health</option>
-                        <option value="Weight Loss">Weight Loss</option>
-                        <option value="Fitness & Muscle">Fitness & Muscle Gain</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="weight loss">Weight Loss</option>
+                        <option value="weight gain">Weight Gain / Muscle</option>
                     </select>
                 </div>
             </div>
@@ -53,39 +68,35 @@
             </button>
         </section>
 
-        <!-- Loading Animation (Hidden by default) -->
+        <!-- Loading -->
         <div id="loading" class="loading-container hidden">
             <div class="spinner"></div>
-            <p class="pulse-text">AI is analyzing your food profile...</p>
+            <p class="pulse-text">AI is running Gemini analysis...</p>
         </div>
 
-        <!-- Results Section (Hidden by default) -->
+        <!-- AI Results Section -->
         <section id="results" class="results-section hidden">
             <div class="results-header">
-                <span class="ai-badge"><i class="fa-solid fa-robot"></i> AI Recommendation</span>
+                <span class="ai-badge"><i class="fa-solid fa-robot"></i> Gemini Recommendation</span>
                 <h2 id="resultFoodName">Food Analysis</h2>
             </div>
 
             <div class="cards-grid">
-                <!-- Health Score Card -->
                 <div class="result-card" id="cardHealthScore">
                     <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
                     <h3>Health Score</h3>
                     <p id="scoreValue" class="score-badge">---</p>
                 </div>
-                <!-- Calories Card -->
                 <div class="result-card" id="cardCalories">
                     <div class="card-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
                     <h3>Estimated Calories</h3>
                     <p id="caloriesValue" class="metric-value">---</p>
                 </div>
-                <!-- Nutritional Tips Card -->
                 <div class="result-card wide-card">
                     <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
                     <h3>Nutritional Tips</h3>
                     <p id="tipsValue">---</p>
                 </div>
-                <!-- Healthier Alternative Card -->
                 <div class="result-card wide-card highlight-card">
                     <div class="card-icon"><i class="fa-solid fa-award"></i></div>
                     <h3>Suggested Healthier Alternative</h3>
@@ -94,10 +105,15 @@
             </div>
         </section>
 
-        <!-- Why This Matters Section -->
-        <section class="why-matters glass-panel mt">
-            <h2><i class="fa-solid fa-circle-info"></i> Why this matters</h2>
-            <p>Understanding the nutritional profile of your daily intake is the foundation of a healthy lifestyle. Our AI assistant helps you make conscious choices by providing instant feedback on your meals, tailored specifically to your personal health goals. Small dietary shifts lead to massive long-term benefits.</p>
+        <!-- Search History -->
+        <section class="history-section glass-panel mt">
+            <div class="history-header">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Searches <span id="historyCount"></span></h2>
+                <button id="clearHistoryBtn" class="clear-btn" title="Clear History"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <ul id="historyList" class="history-list">
+                <!-- Appended via JS -->
+            </ul>
         </section>
     </main>
 

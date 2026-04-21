@@ -1,13 +1,19 @@
-FROM nginx:alpine
+FROM node:20-alpine
 
-# Copy the static web application files to Nginx's serving directory
-COPY . /usr/share/nginx/html
+# Create app directory
+WORKDIR /app
 
-# Cloud Run expects the container to listen on Port 8080
+# Install app dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Bundle app source code
+COPY . .
+
+# Expose standard Cloud Run port
 EXPOSE 8080
 
-# Update the Nginx default configuration to listen on port 8080 instead of 80
-RUN sed -i 's/listen  *80;/listen 8080;/g' /etc/nginx/conf.d/default.conf
+# Environment variables can be mapped directly in Cloud Run
+ENV PORT=8080
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "npm", "start" ]
