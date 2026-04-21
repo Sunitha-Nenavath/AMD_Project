@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Smart Food Health Assistant</title>
+    <!-- Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Dynamic Glowing Background -->
+    <div class="background-elements">
+        <div class="blob shape1"></div>
+        <div class="blob shape2"></div>
+        <div class="blob shape3"></div>
+    </div>
+
+    <main class="container">
+        <!-- Header Section -->
+        <header>
+            <h1><i class="fa-solid fa-leaf text-gradient"></i> AI Smart Food Health Assistant</h1>
+            <p>Empower your diet with intelligent nutritional analysis and tailored insights.</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section glass-panel">
+            <div class="input-group">
+                <label for="foodInput">What did you eat (or plan to eat)?</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-utensils"></i>
+                    <input type="text" id="foodInput" placeholder="e.g., Pizza, Salad, Rice...">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="goalInput">What is your primary health goal?</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <select id="goalInput">
+                        <option value="General Health">General Health</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Fitness & Muscle">Fitness & Muscle Gain</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="analyzeBtn" class="primary-btn">
+                <span>Analyze Food</span>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </button>
+        </section>
+
+        <!-- Loading Animation (Hidden by default) -->
+        <div id="loading" class="loading-container hidden">
+            <div class="spinner"></div>
+            <p class="pulse-text">AI is analyzing your food profile...</p>
+        </div>
+
+        <!-- Results Section (Hidden by default) -->
+        <section id="results" class="results-section hidden">
+            <div class="results-header">
+                <span class="ai-badge"><i class="fa-solid fa-robot"></i> AI Recommendation</span>
+                <h2 id="resultFoodName">Food Analysis</h2>
+            </div>
+
+            <div class="cards-grid">
+                <!-- Health Score Card -->
+                <div class="result-card" id="cardHealthScore">
+                    <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <h3>Health Score</h3>
+                    <p id="scoreValue" class="score-badge">---</p>
+                </div>
+                <!-- Calories Card -->
+                <div class="result-card" id="cardCalories">
+                    <div class="card-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                    <h3>Estimated Calories</h3>
+                    <p id="caloriesValue" class="metric-value">---</p>
+                </div>
+                <!-- Nutritional Tips Card -->
+                <div class="result-card wide-card">
+                    <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3>Nutritional Tips</h3>
+                    <p id="tipsValue">---</p>
+                </div>
+                <!-- Healthier Alternative Card -->
+                <div class="result-card wide-card highlight-card">
+                    <div class="card-icon"><i class="fa-solid fa-award"></i></div>
+                    <h3>Suggested Healthier Alternative</h3>
+                    <p id="alternativeValue">---</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why This Matters Section -->
+        <section class="why-matters glass-panel mt">
+            <h2><i class="fa-solid fa-circle-info"></i> Why this matters</h2>
+            <p>Understanding the nutritional profile of your daily intake is the foundation of a healthy lifestyle. Our AI assistant helps you make conscious choices by providing instant feedback on your meals, tailored specifically to your personal health goals. Small dietary shifts lead to massive long-term benefits.</p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
