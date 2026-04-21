@@ -18,12 +18,12 @@
     <main class="container">
         <header>
             <h1><i class="fa-solid fa-leaf text-gradient"></i> AI Smart Food Health Assistant</h1>
-            <p>Empower your diet with intelligent nutritional analysis via Google Gemini API.</p>
+            <p>Empower your diet with advanced nutritional analysis and customized insights via Gemini AI.</p>
         </header>
 
-        <!-- BMI Calculator Section -->
+        <!-- BMI Calculator (Generates AI Prompt user data) -->
         <section class="bmi-section glass-panel">
-            <h2><i class="fa-solid fa-weight-scale"></i> Quick BMI Calculator</h2>
+            <h2><i class="fa-solid fa-weight-scale"></i> Enter Body Data (Required for Personalization)</h2>
             <div class="input-group-row">
                 <div class="input-group half-width">
                     <label for="bmiHeight">Height (cm)</label>
@@ -34,8 +34,8 @@
                     <input type="number" id="bmiWeight" placeholder="e.g., 70">
                 </div>
             </div>
-            <button id="calcBmiBtn" class="primary-btn bmi-btn secondary">Calculate BMI</button>
-            <div id="bmiResult" class="hidden mt-small result-message">
+            <button id="calcBmiBtn" class="primary-btn bmi-btn secondary" style="margin-top: 10px;">Calculate BMI</button>
+            <div id="bmiResult" class="hidden mt-small result-message" style="margin-top: 15px;">
                 <p>Your BMI is <span id="bmiValue" class="metric-value small-metric">--</span> (<span id="bmiCategory" class="highlight-text">--</span>)</p>
             </div>
         </section>
@@ -43,27 +43,27 @@
         <!-- Input Section -->
         <section class="input-section glass-panel mt">
             <div class="input-group">
-                <label for="foodInput">What did you eat (or plan to eat)?</label>
+                <label for="foodInput">Target Food to Analyze</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-utensils"></i>
-                    <input type="text" id="foodInput" placeholder="e.g., Pizza, Salad, Rice...">
+                    <input type="text" id="foodInput" placeholder="e.g., Butter Chicken with Naan">
                 </div>
             </div>
 
             <div class="input-group">
-                <label for="goalInput">What is your primary health goal?</label>
+                <label for="goalInput">What is your primary goal?</label>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-bullseye"></i>
                     <select id="goalInput">
-                        <option value="maintenance">Maintenance</option>
-                        <option value="weight loss">Weight Loss</option>
-                        <option value="weight gain">Weight Gain / Muscle</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Weight Gain">Weight Gain / Muscle</option>
                     </select>
                 </div>
             </div>
 
-            <button id="analyzeBtn" class="primary-btn">
-                <span>Analyze Food</span>
+            <button id="analyzeBtn" class="primary-btn mt-small">
+                <span>Run Advanced Analysis</span>
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
             </button>
         </section>
@@ -71,20 +71,21 @@
         <!-- Loading -->
         <div id="loading" class="loading-container hidden">
             <div class="spinner"></div>
-            <p class="pulse-text">AI is running Gemini analysis...</p>
+            <p class="pulse-text">Gemini is writing your analysis...</p>
         </div>
 
         <!-- AI Results Section -->
         <section id="results" class="results-section hidden">
             <div class="results-header">
-                <span class="ai-badge"><i class="fa-solid fa-robot"></i> Gemini Recommendation</span>
+                <span class="ai-badge"><i class="fa-solid fa-robot"></i> Advanced Matrix Generated</span>
                 <h2 id="resultFoodName">Food Analysis</h2>
             </div>
 
             <div class="cards-grid">
+                <!-- Top Overview -->
                 <div class="result-card" id="cardHealthScore">
                     <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-                    <h3>Health Score</h3>
+                    <h3>Overall Health Score</h3>
                     <p id="scoreValue" class="score-badge">---</p>
                 </div>
                 <div class="result-card" id="cardCalories">
@@ -92,15 +93,56 @@
                     <h3>Estimated Calories</h3>
                     <p id="caloriesValue" class="metric-value">---</p>
                 </div>
+
+                <!-- Deep Dive Macros -->
                 <div class="result-card wide-card">
-                    <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
-                    <h3>Nutritional Tips</h3>
-                    <p id="tipsValue">---</p>
+                    <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3>Macronutrient Breakdown</h3>
+                    <div style="display: flex; justify-content: space-around; margin-top:0.5rem; text-align: center;">
+                        <div><p class="metric-value small-metric" id="macroProtein">--</p><p style="color:var(--text-muted);font-size:0.9rem;">Protein</p></div>
+                        <div><p class="metric-value small-metric" id="macroCarbs">--</p><p style="color:var(--text-muted);font-size:0.9rem;">Carbohydrates</p></div>
+                        <div><p class="metric-value small-metric" id="macroFats">--</p><p style="color:var(--text-muted);font-size:0.9rem;">Fats</p></div>
+                    </div>
                 </div>
-                <div class="result-card wide-card highlight-card">
+
+                <!-- Reason Card -->
+                <div class="result-card wide-card" style="background: rgba(0,0,0,0.1);">
+                    <div class="card-icon"><i class="fa-solid fa-circle-info"></i></div>
+                    <h3>Why?</h3>
+                    <p id="reasonValue">---</p>
+                </div>
+
+                <!-- Body Tailored Advice -->
+                <div class="result-card wide-card">
+                    <div class="card-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                    <h3>Personalized Body Advice</h3>
+                    <p id="adviceValue">---</p>
+                </div>
+
+                <!-- Portion Recommendation -->
+                <div class="result-card">
+                    <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3>Recommended Portion Size</h3>
+                    <p id="portionValue" style="margin-top:0.5rem; font-weight:bold;">---</p>
+                </div>
+
+                <!-- Replacement Option -->
+                <div class="result-card highlight-card">
                     <div class="card-icon"><i class="fa-solid fa-award"></i></div>
-                    <h3>Suggested Healthier Alternative</h3>
+                    <h3>Healthier Alternative</h3>
                     <p id="alternativeValue">---</p>
+                </div>
+
+                <!-- 1 Full Day Diet Blueprint -->
+                <div class="result-card wide-card highlight-card">
+                    <div class="card-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                    <h3>Suggested 1-Day Diet Matrix</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; color:#f8fafc;">
+                        <div><strong style="color:var(--success);">🍳 Breakfast:</strong> <br><span id="dpBreakfast">--</span></div>
+                        <div><strong style="color:var(--warning);">🥗 Lunch:</strong> <br><span id="dpLunch">--</span></div>
+                        <div><strong style="color:var(--primary);">🍗 Dinner:</strong> <br><span id="dpDinner">--</span></div>
+                        <div><strong style="color:#d946ef;">🍏 Snacks:</strong> <br><span id="dpSnacks">--</span></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -108,7 +150,7 @@
         <!-- Search History -->
         <section class="history-section glass-panel mt">
             <div class="history-header">
-                <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Searches <span id="historyCount"></span></h2>
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> History <span id="historyCount"></span></h2>
                 <button id="clearHistoryBtn" class="clear-btn" title="Clear History"><i class="fa-solid fa-trash"></i></button>
             </div>
             <ul id="historyList" class="history-list">

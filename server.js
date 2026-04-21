@@ -10,47 +10,84 @@ const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
-// Serve the frontend UI
 app.use(express.static('public'));
 
-// Setup Gemini API Client (Ensure GEMINI_API_KEY is in .env file)
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
 
 app.post('/analyze', async (req, res) => {
     try {
         if (!genAI) {
-            return res.status(500).json({ error: "Missing Google Gemini API Key on server." });
+            return res.status(500).json({ error: "Missing Google Gemini API Key." });
         }
 
-        const { food, goal } = req.body;
+        const { food, goal, height, weight, bmi } = req.body;
         if (!food || !goal) {
-            return res.status(400).json({ error: "Both food and goal are required fields." });
+            return res.status(400).json({ error: "Food and goal are required." });
         }
 
-        // Initialize desired model
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         
-        // Strict Prompt instructing AI to ALWAYS return parseable JSON
-        const prompt = `You are a nutrition analyst. Analyze the following food item: "${food}" based on the primary user health goal: "${goal}".
-Respond ONLY with a valid JSON object. Do not format as markdown. The JSON must exactly contain these keys:
+        // Exact Prompt Template Mapped to JSON strictly!
+        const prompt = `You are an advanced AI Smart Food Health Assistant.
+Your job is to analyze any food input and generate personalized health insights based on user data.
+
+USER DATA:
+- Height: ${height} cm
+- Weight: ${weight} kg
+- BMI: ${bmi}
+- Health Goal: ${goal} 
+
+FOOD INPUT:
+${food}
+
+TASKS:
+1. Identify the food correctly (handle spelling mistakes or variations).
+2. Estimate calories for a typical serving size.
+3. Provide macronutrient breakdown:
+   - Protein (g)
+   - Carbohydrates (g)
+   - Fats (g)
+4. Assign a health score: Healthy / Moderate / Unhealthy
+5. Explain briefly why (nutrition quality, oil, sugar, protein, etc.).
+6. Give personalized advice based on BMI category and user goal.
+7. Suggest a healthier alternative (realistic and similar food).
+8. Recommend portion size.
+9. Generate 1-day sample diet plan aligned with user's goal.
+10. Keep response concise but structured.
+
+OUTPUT FORMAT (STRICT JSON ONLY WITHOUT MARKDOWN BACKTICKS):
 {
-  "health": "Healthy" or "Moderate" or "Unhealthy",
-  "calories": "Estimated typical calories (e.g., '~350 kcal')",
-  "tips": "Short, precise 1-2 sentence nutritional tip directly aligned with the goal.",
-  "suggestion": "A specific, actionable healthier alternative food recommendation."
+  "food_name": "",
+  "estimated_calories": "",
+  "macronutrients": {
+    "protein": "",
+    "carbs": "",
+    "fats": ""
+  },
+  "health_score": "",
+  "reason": "",
+  "personalized_advice": "",
+  "portion_recommendation": "",
+  "healthier_alternative": "",
+  "one_day_diet_plan": {
+    "breakfast": "",
+    "lunch": "",
+    "dinner": "",
+    "snacks": ""
+  }
 }`;
 
         const result = await model.generateContent(prompt);
         const responseText = result.response.text();
         
-        // Remove potential markdown code blocks to safely parse JSON
-        const cleanJSON = responseText.replace(/```json/g, "").replace(/```/g, "").trim();
+        // Strip markdown backticks
+        const cleanJSON = responseText.replace(/```json/gi, "").replace(/```/g, "").trim();
         const data = JSON.parse(cleanJSON);
         
         res.json(data);
     } catch (error) {
         console.error("AI Analysis Error:", error);
-        res.status(500).json({ error: "Failed to generate AI analysis. See server logs." });
+        res.status(500).json({ error: "Failed to generate AI analysis." });
     }
 });
 
