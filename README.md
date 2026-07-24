@@ -1,5 +1,7 @@
 # AI Smart Food Health Assistant
 
+Live Demo:https://smart-food-health-assistant.onrender.com/
+
 A smart web application designed to help individuals make better food choices and build healthier eating habits. The application evaluates food items based on the user's primary health goals (e.g., Weight Loss, Fitness, or General Health) and provides a health score, calorie estimate, nutritional tips, and a suggested healthier alternative.
 
 ## Hackathon Features
